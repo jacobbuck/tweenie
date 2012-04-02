@@ -11,15 +11,15 @@ var tween = tweenie(
 		// do something at position
 		thing.style.top = position + "px";
 	},
+	100, // start (optional)
+	300, // end (optional)
 	function () {
 		// do something on completion (optional)
 		console.log("done");
 	},
-	easings.bounce, // easing function (optional)
-	100, // start (optional)
-	300 // end (optional)
+	easings.bounce // easing function (optional)
 )
-// stop and jump to the end of an animation
+// stop and jump to the end of a tween
 tween.stop();
 ```
 
