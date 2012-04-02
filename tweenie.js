@@ -2,8 +2,7 @@
  * tweenie.js - Copyright (c) 2012 Jacob Buck
  * https://github.com/jacobbuck/tweenie.js
  * Licensed under the terms of the MIT license.
- * special thanks to:
- * ded: https://github.com/ded/morpheus && madrobby: https://github.com/madrobby/emile
+ * special thanks to: ded && madrobby && paulirish
  */
 ! function (document, window) {
 	
