@@ -25,6 +25,6 @@ tween.stop();
 
 Will run on all [Grade A browsers](http://yuilibrary.com/yui/docs/tutorials/gbs/) with a [requestAnimationFrame polyfill](https://gist.github.com/1579671).
 
-#### Inspired by
+### Inspired by
 
-[Morpheus](https://github.com/ded/morpheus/) by Dustin Diaz, [Émile](https://github.com/madrobby/emile/) by Thomas Fuchs, and Paul Irish’s [blog post on requestAnimationFrame](http://paulirish.com/2011/requestanimationframe-for-smart-animating/)
+[Morpheus](https://github.com/ded/morpheus/) by Dustin Diaz, [Émile](https://github.com/madrobby/emile/) by Thomas Fuchs, and [this blog post](http://paulirish.com/2011/requestanimationframe-for-smart-animating/) by Paul Irish.
