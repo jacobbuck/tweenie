@@ -15,7 +15,7 @@ var tween = tweenie(
 	function () { // do something on completion (optional)
 		console.log("done");
 	},
-	easings.bounce // [easing function](https://github.com/ded/morpheus/blob/master/src/easings.js) (optional)
+	easings.bounce // easing function (https://github.com/ded/morpheus/blob/master/src/easings.js) (optional)
 );
 // stop and jump to the end of a tween
 tween.stop();
