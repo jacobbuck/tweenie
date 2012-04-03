@@ -25,6 +25,10 @@ tween.stop();
 
 Will run on all [Grade A browsers](http://yuilibrary.com/yui/docs/tutorials/gbs/) with a [requestAnimationFrame polyfill](https://gist.github.com/1579671).
 
+### tweenie.js vs tweenie-full.js
+
+**tweenie-full.js** includes a requestAnimationFrame polyfill, **tweenie.js** lets you use your own.
+
 ### Inspired by
 
 [Morpheus](https://github.com/ded/morpheus/) by Dustin Diaz, [Émile](https://github.com/madrobby/emile/) by Thomas Fuchs, and [this blog post](http://paulirish.com/2011/requestanimationframe-for-smart-animating/) by Paul Irish.
