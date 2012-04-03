@@ -24,8 +24,6 @@
 	window.tweenie = function (duration, fn, from, to, complete, easing) {
 		var start,
 			stop,
-			from = from || 0,
-			to = to || 1,
 			easing = easing || function (t) { return Math.sin(t * Math.PI / 2); },
 			run = function (time) {
 				start = start || time;

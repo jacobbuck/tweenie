@@ -10,8 +10,8 @@ var tween = tweenie(
 	function (position) { // do something at position
 		thing.style.top = position + "px";
 	},
-	100, // start (optional)
-	300, // end (optional)
+	100, // start
+	300, // end
 	function () { // do something on completion (optional)
 		console.log("done");
 	},
