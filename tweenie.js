@@ -4,10 +4,8 @@
  * Licensed under the terms of the MIT license.
  * special thanks to: ded && madrobby && paulirish
  */
-! function (document, window) {
-	
-	var queue = [];
-	
+! function (document, window, queue) {
+		
 	function render (time) {
 		for (var i = 0; i < queue.length; i++)
 			queue[i](time);
@@ -46,4 +44,4 @@
 		};
 	}
 	
-} (document, window);
+} (document, window, []);
