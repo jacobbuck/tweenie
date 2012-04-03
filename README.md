@@ -7,18 +7,16 @@ a small (0.3 KB gzipped) tweening libary using the [requestAnimationFrame](http:
 ``` js
 var tween = tweenie(
 	1000, // duration
-	function (position) {
-		// do something at position
+	function (position) { // do something at position
 		thing.style.top = position + "px";
 	},
 	100, // start (optional)
 	300, // end (optional)
-	function () {
-		// do something on completion (optional)
+	function () { // do something on completion (optional)
 		console.log("done");
 	},
-	easings.bounce // easing function (optional)
-)
+	easings.bounce // [easing function](https://github.com/ded/morpheus/blob/master/src/easings.js) (optional)
+);
 // stop and jump to the end of a tween
 tween.stop();
 ```
