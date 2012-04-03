@@ -22,16 +22,14 @@
 	}
 	
 	window.tweenie = function (duration, fn, from, to, complete, easing) {
-		var me = this,
-			start = +new Date(),
-			end = start + duration,
+		var start = +new Date(),
 			stop = 0,
 			from = from || 0,
 			to = to || 1,
 			easing = easing || function (t) { return Math.sin(t * Math.PI / 2); },
 			run = function (time) {
-				fn((easing((stop || time > end ? 1 : (time - start) / duration)) * (to - from)) + from);
-				if (stop || time > end) {
+				fn((easing((stop || time > start + duration ? 1 : (time - start) / duration)) * (to - from)) + from);
+				if (stop || time > start + duration) {
 					rem_queue(run);
 					complete && complete();
 				}
