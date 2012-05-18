@@ -5,29 +5,14 @@
  */
 window.tweenie = function (window) {
 	
-	var request_frame = function () { // requestAnimationFrame polyfill - adapted from https://gist.github.com/1579671
-			var lastTime = 0,
-				vendors = ["ms", "moz", "webkit", "o"];
-			for(var x = 0; x < vendors.length && ! window.requestAnimationFrame; ++x)
-				if (window[vendors[x]+"RequestAnimationFrame"])
-					return window[vendors[x]+"RequestAnimationFrame"];
-			return function (callback, element) {
-				var currTime = +new Date(),
-					timeToCall = Math.max(0, 16 - (currTime - lastTime)),
-					id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
-				  timeToCall);
-				lastTime = currTime + timeToCall;
-				return id;
-			};
-		} (),
-		queue = [],
+	var queue = [],
 		render_queue = function (time) {
 			for (var i = 0; i < queue.length; i++)
 				queue[i](time);
-			queue.length && request_frame(render_queue);
+			queue.length && requestAnimationFrame(render_queue);
 		},
 		add_queue = function (fn) {
-			queue.push(fn) === 1 && request_frame(render_queue);
+			queue.push(fn) === 1 && requestAnimationFrame(render_queue);
 		},
 		rem_queue = function (fn) {
 			for (var i = 0; i < queue.length; i++)
@@ -36,7 +21,7 @@ window.tweenie = function (window) {
 		empty_queue = function () {
 			queue = [];
 		},
-		tweenie =  function (duration, fn, from, to, complete, easing) {
+		tweenie = function (duration, fn, from, to, complete, easing) {
 			var start,
 				stop,
 				easing = easing || function (t) { return Math.sin(t * Math.PI / 2); },
