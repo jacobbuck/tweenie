@@ -7,10 +7,9 @@ window.tweenie = function (window) {
 	
 	var request_frame = function () { // requestAnimationFrame polyfill - adapted from https://gist.github.com/1579671
 			var lastTime = 0,
-				vendors = ["ms", "moz", "webkit", "o"];
-			for(var x = 0; x < vendors.length && ! window.requestAnimationFrame; ++x)
-				if (window[vendors[x]+"RequestAnimationFrame"])
-					return window[vendors[x]+"RequestAnimationFrame"];
+				vendors = ["r", "msR", "mozR", "webkitR", "oR"];
+			for (var i = 0, val; val = vendors[i]+"equestAnimationFrame", i < vendors.length; i++)
+				if (val in window) return window[val];
 			return function (callback, element) {
 				var currTime = +new Date(),
 					timeToCall = Math.max(0, 16 - (currTime - lastTime)),

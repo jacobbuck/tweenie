@@ -5,14 +5,15 @@
  */
 window.tweenie = function (window) {
 	
-	var queue = [],
+	var request_frame = requestAnimationFrame,
+		queue = [],
 		render_queue = function (time) {
 			for (var i = 0; i < queue.length; i++)
 				queue[i](time);
-			queue.length && requestAnimationFrame(render_queue);
+			queue.length && request_frame(render_queue);
 		},
 		add_queue = function (fn) {
-			queue.push(fn) === 1 && requestAnimationFrame(render_queue);
+			queue.push(fn) === 1 && request_frame(render_queue);
 		},
 		rem_queue = function (fn) {
 			for (var i = 0; i < queue.length; i++)
