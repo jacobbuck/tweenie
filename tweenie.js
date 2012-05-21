@@ -3,17 +3,18 @@
  * https://github.com/jacobbuck/tweenie.js
  * Licensed under the terms of the MIT license.
  */
-window.tweenie = function (window) {
+window.tweenie = function (win) {
 	
 	var request_frame = function () { // requestAnimationFrame polyfill - adapted from https://gist.github.com/1579671
-			var lastTime = 0,
-				vendors = ["r", "msR", "mozR", "webkitR", "oR"];
-			for (var i = 0, val; val = vendors[i]+"equestAnimationFrame", i < vendors.length; i++)
-				if (val in window) return window[val];
+			var lastTime = i = 0,
+				vendors = ["r", "msR", "mozR", "webkitR", "oR"],
+				val;
+			for (; val = vendors[i]+"equestAnimationFrame", i < vendors.length; i++)
+				if (val in win) return win[val];
 			return function (callback, element) {
 				var currTime = +new Date(),
 					timeToCall = Math.max(0, 16 - (currTime - lastTime)),
-					id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+					id = win.setTimeout(function() { callback(currTime + timeToCall); }, 
 				  timeToCall);
 				lastTime = currTime + timeToCall;
 				return id;
@@ -35,17 +36,15 @@ window.tweenie = function (window) {
 		empty_queue = function () {
 			queue = [];
 		},
-		tweenie =  function (duration, fn, from, to, complete, easing) {
+		tweenie = function (duration, fn, from, to, complete, easing) {
 			var start,
 				stop,
-				easing = easing || function (t) { return Math.sin(t * Math.PI / 2); },
+				easing = easing || function (t,b,c,d) { return c * Math.sin(t/d * (Math.PI/2)) + b; }, // sine ease out
 				run = function (time) {
 					start = start || time;
-					fn((easing((stop || time > start + duration ? 1 : (time - start) / duration)) * (to - from)) + from);
-					if (stop || time > start + duration) {
-						rem_queue(run);
-						complete && complete();
-					}
+					fn(stop || time > start + duration ? to : easing(time - start, 0, 1, duration) * (to - from) + from);
+					if (stop || time > start + duration)
+						rem_queue(run) || complete && complete();
 				};
 			add_queue(run);
 			return {
@@ -57,4 +56,4 @@ window.tweenie = function (window) {
 	
 	return tweenie;
 	
-} (window);
+} (this);

@@ -3,9 +3,9 @@
  * https://github.com/jacobbuck/tweenie.js
  * Licensed under the terms of the MIT license.
  */
-window.tweenie = function (window) {
+window.tweenie = function () {
 	
-	var request_frame = requestAnimationFrame,
+	var request_frame = window.requestAnimationFrame,
 		queue = [],
 		render_queue = function (time) {
 			for (var i = 0; i < queue.length; i++)
@@ -25,14 +25,12 @@ window.tweenie = function (window) {
 		tweenie = function (duration, fn, from, to, complete, easing) {
 			var start,
 				stop,
-				easing = easing || function (t) { return Math.sin(t * Math.PI / 2); },
+				easing = easing || function (t,b,c,d) { return c * Math.sin(t/d * (Math.PI/2)) + b; }, // sine ease out
 				run = function (time) {
 					start = start || time;
-					fn((easing((stop || time > start + duration ? 1 : (time - start) / duration)) * (to - from)) + from);
-					if (stop || time > start + duration) {
-						rem_queue(run);
-						complete && complete();
-					}
+					fn(stop || time > start + duration ? to : easing(time - start, 0, 1, duration) * (to - from) + from);
+					if (stop || time > start + duration)
+						rem_queue(run) || complete && complete();
 				};
 			add_queue(run);
 			return {
@@ -44,4 +42,4 @@ window.tweenie = function (window) {
 	
 	return tweenie;
 	
-} (window);
+} ();
