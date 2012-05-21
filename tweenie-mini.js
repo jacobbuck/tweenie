@@ -3,9 +3,9 @@
  * https://github.com/jacobbuck/tweenie.js
  * Licensed under the terms of the MIT license.
  */
-window.tweenie = function () {
+window.tweenie = function (win) {
 	
-	var request_frame = window.requestAnimationFrame,
+	var request_frame = win.requestAnimationFrame,
 		queue = [],
 		render_queue = function (time) {
 			for (var i = 0; i < queue.length; i++)
@@ -42,4 +42,4 @@ window.tweenie = function () {
 	
 	return tweenie;
 	
-} ();
+} (this);

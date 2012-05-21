@@ -6,8 +6,9 @@
 window.tweenie = function (win) {
 	
 	var request_frame = function () { // requestAnimationFrame polyfill - adapted from https://gist.github.com/1579671
-			var lastTime = i = 0,
+			var lastTime = 0,
 				vendors = ["r", "msR", "mozR", "webkitR", "oR"],
+				i,
 				val;
 			for (; val = vendors[i]+"equestAnimationFrame", i < vendors.length; i++)
 				if (val in win) return win[val];
