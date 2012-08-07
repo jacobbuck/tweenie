@@ -13,7 +13,8 @@ window.tweenie = function ( window ) {
 				i = 0,
 				val;
 			for ( ; val = vendors[i] + 'equestAnimationFrame', i < vendors.length; i++ )
-				if ( val in window ) return window[ val ];
+				if ( val in window )
+					return window[ val ];
 			return function ( callback, element ) {
 				var currTime = +new Date(),
 					timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) ),
@@ -36,8 +37,7 @@ window.tweenie = function ( window ) {
 	function remove ( fn ) {
 		for ( var i = 0; i < queue.length; i++ )
 			fn === queue[ i ] && queue.splice( i, 1 );
-		if ( ! queue.length )
-			endall = 0;
+		queue.length || (endall = 0);
 	}
 	
 	function tweenie ( duration, step, from, to, callback, easing ) {
@@ -45,11 +45,10 @@ window.tweenie = function ( window ) {
 			end,
 			easing = easing || function (t,b,c,d) { return c * Math.sin(t/d * (Math.PI/2)) + b; }, // sine ease out
 			run = function ( time ) {
-				end = end || endall;
+				end = time > start + duration || end || endall;
 				start = start || time;
-				step( end || time > start + duration ? to : easing( time - start, 0, 1, duration ) * ( to - from ) + from );
-				if ( end || time > start + duration )
-					remove( run ) || callback && callback();
+				step( end ? to : easing( time - start, 0, 1, duration ) * ( to - from ) + from );
+				end && ( remove( run ) || callback && callback() );
 			};
 		add( run );
 		return {
