@@ -8,7 +8,7 @@ A small (0.4 KB gzipped) tweening libary using the [requestAnimationFrame](http:
 var mytween = tweenie(
 	1000, // duration
 	function ( position ) { // do something at position
-		thing.style.top = position + "px";
+		thing.style.top = position + 'px';
 	},
 	100, // start
 	300, // end
@@ -17,6 +17,7 @@ var mytween = tweenie(
 	},
 	function (t, b, c, d) { return fancy math equation; } // easing equation (optional)
 );
+
 // stop and end a tween
 mytween.end();
 
@@ -25,6 +26,7 @@ tweenie.end();
 
 // kill (stop but not end) all existing tweens
 tweenie.kill();
+
 ```
 
 ### Browser support
