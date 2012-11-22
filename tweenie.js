@@ -27,20 +27,30 @@
 		};
 	}
 
+	// Object Prototype Extender
+	Object.prototype.extend = function() {
+		for ( var i = 0; i < arguments.length; i++ )
+			for ( var j in arguments[ i ] )
+				this.prototype[ j ] = arguments[ i ][ j ];
+	}
+
 	// Stack Object
 	var Stack = function(){
 		this.items = [];
-		this.add = function( fn ){
+		return this;
+	};
+	Stack.extend({
+		add: function( fn ){
 			this.items.push( fn );
 			return this.tick();
-		};
-		this.remove = function( fn ){
+		},
+		remove: function( fn ){
 			for ( var i = 0; i < this.items.length; i++ )
 				if ( fn === this.items[ i ] )
 					this.items.splice( i, 1 );
 			return this;
-		};
-		this.step = function( time ){
+		},
+		step: function( time ){
 			if ( this.items.length < 1 )
 				return this;
 			for ( var i = 0, item; item = this.items[ i ], i < this.items.length; i++ ) {
@@ -48,8 +58,9 @@
 				if ( item.pause ) 
 					this.remove( item );
 			}
-		};
-		this.tick = function () {
+			return this;
+		},
+		tick: function () {
 			if ( this.items.length > 0 ) {
 				var self = this;
 				requestAnimationFrame(function( time ){ 
@@ -58,25 +69,27 @@
 				});
 			}
 			return this;
-		};
-		this.stop = function ( finish ) {
+		},
+		stop: function ( finish ) {
 			for ( var i = 0; i < this.items.length; i++ )
 				this.items[ i ].stop( finish );
 			return this;
-		};
-		return this;
-	};
-
+		}
+	});
+	
 	// Tween Object
 	var Tween = function( options, parent ){
 		this.options = options;
 		this.parent  = parent;
-		this.start = function(){
+		return this;
+	};
+	Tween.extend({
+		start: function(){
 			this.finish = this.pause = 0;
-			parent.stack.remove( this ).add( this );
+			this.parent.stack.remove( this ).add( this );
 			return this;
-		};
-		this.step = function( time ){
+		},
+		step: function( time ){
 			this.started = this.started || time;
 			if ( time > this.started + this.options.duration )
 				this.finish = this.pause = true;
@@ -84,37 +97,38 @@
 			if ( this.finish && this.options.callback )
 				this.options.callback.call( this );
 			return this;
-		};
-		this.stop = function( finish ){
+		},
+		stop: function( finish ){
 			this.finish = !!finish;
 			this.pause  = 1;
 			return this;
-		};
-		this.reset = function( finish ){
+		},
+		reset: function( finish ){
 			this.started = this.finish = this.pause = 0;
 			return this;
-		};
-		return this;
-	};
+		}
+	})
 
 	// Tweenie Object
 	var Tweenie = function(){
 		this.stack = new Stack();
-		this.tween = function( duration, from, to, step, callback, easing ){
+	};
+	Tweenie.extend({
+		tween: function( duration, from, to, step, callback, easing ){
 			return new Tween( {
 				duration : duration,
-				from : from,
-				to : to,
-				step : step,
+				from     : from,
+				to       : to,
+				step     : step,
 				callback : callback,
-				easing: easing || function (t,b,c,d) { return c * Math.sin(t/d * (Math.PI/2)) + b; }
+				easing   : easing || function (t,b,c,d) { return c * Math.sin(t/d * (Math.PI/2)) + b; }
 			}, this );
-		}
-		this.stop = function( finish ){
+		},
+		stop: function( finish ){
 			this.stack.stop( finish );
 			return this;
-		};
-	};
+		}
+	});
 
 	// Tweenie Object Global 
 	window.Tweenie = Tweenie;

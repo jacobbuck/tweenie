@@ -1,6 +1,6 @@
 Tweenie
 -------
-A small (under 0.7 KB gzipped) tweening libary using the [requestAnimationFrame](http://webstuff.nfshost.com/anim-timing/Overview.html) standard.
+A small (0.8 KB gzipped) tweening libary using the [requestAnimationFrame](http://webstuff.nfshost.com/anim-timing/Overview.html) standard.
 
 ### Usage
 
