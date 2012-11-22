@@ -1,37 +1,57 @@
 Tweenie
 -------
-A small (0.4 KB gzipped) tweening libary using the [requestAnimationFrame](http://webstuff.nfshost.com/anim-timing/Overview.html) standard.
+A small (0.7 KB gzipped) tweening libary using the [requestAnimationFrame](http://webstuff.nfshost.com/anim-timing/Overview.html) standard.
 
 ### Usage
 
 ``` js
-var mytween = tweenie(
+// Create a new instance of Tweenie
+var tweenie = new Tweenie();
+
+// Create a new Tween
+var mytween = tweenie.tween(
 	1000, // duration
+	100, // start
+	300, // end
 	function ( position ) { // do something at position
 		thing.style.top = position + 'px';
 	},
-	100, // start
-	300, // end
 	function () { // do something on completion (optional)
 		console.log('done');
 	},
 	function (t, b, c, d) { return fancy math equation; } // easing equation (optional)
 );
 
-// stop and end a tween
-mytween.end();
+// Start a Tween
+mytween.start();
 
-// stop and end all existing tweens
-tweenie.end();
+// Stop a Tween
+mytween.stop();
 
-// kill (stop but not end) all existing tweens
-tweenie.kill();
+// Stop and finish a Tween
+mytween.stop( true );
 
+// Reset a Tween
+mytween.reset();
+
+// Stop all Tweens
+tweenie.stop();
+
+// Stop and finish all Tweens
+tweenie.stop( true );
+```
+
+### Chaining
+
+Tweenie has method chaining for both Tweenie and Tween instances. Eg:
+
+``` js
+tweenie.tween( ... ).start();
 ```
 
 ### Browser support
 
-Will run on all [Grade A browsers](http://yuilibrary.com/yui/docs/tutorials/gbs/).
+Will run on all [Grade A browsers](http://yuilibrary.com/yui/environments/).
 
 ### Inspired by
 

@@ -1,69 +1,122 @@
 /*!
- * Tweenie - Copyright (c) 2012 Jacob Buck
+ * Tweenie.js - Copyright (c) 2012 Jacob Buck
  * https://github.com/jacobbuck/tweenie.js
  * Licensed under the terms of the MIT license.
  */
-window.tweenie = function ( window ) {
-		
-	var endall,
-		queue = [],
-		request_frame = function () { // requestAnimationFrame polyfill - adapted from https://gist.github.com/1579671
-			var lastTime = 0,
-				vendors = ['r', 'msR', 'mozR', 'webkitR', 'oR'],
-				i = 0,
-				val;
-			for ( ; val = vendors[i] + 'equestAnimationFrame', i < vendors.length; i++ )
-				if ( val in window )
-					return window[ val ];
-			return function ( callback, element ) {
-				var currTime = +new Date(),
-					timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) ),
-					id = window.setTimeout( function() { callback( currTime + timeToCall ); }, timeToCall );
-				lastTime = currTime + timeToCall;
-				return id;
-			};
-		} ();
-	
-	function render ( time ) {
-		for ( var i = 0; i < queue.length; i++ )
-			queue[ i ]( time );
-		queue.length && request_frame( render );
+(function( window ){
+
+	// requestAnimationFrame polyfill by Erik Möller with fixes from Paul Irish and Tino Zijdel
+	// modified by Jacob Buck for Tweenie.js
+	var lastTime = 0,
+		requestAnimationFrame = window.requestAnimationFrame,
+		cancelAnimationFrame  = window.cancelAnimationFrame,
+		vendors = [ 'ms', 'moz', 'webkit', 'o' ],
+		i = 0;
+	for ( ; i < vendors.length && ! requestAnimationFrame; i++ ) {
+		requestAnimationFrame = window[vendors[i] + 'RequestAnimationFrame'];
 	}
-	
-	function add ( fn ) {
-		1 === queue.push( fn ) && request_frame( render );
-	}
-	
-	function remove ( fn ) {
-		for ( var i = 0; i < queue.length; i++ )
-			fn === queue[ i ] && queue.splice( i, 1 );
-		queue.length || (endall = 0);
-	}
-	
-	function tweenie ( duration, step, from, to, callback, easing ) {
-		var start,
-			end,
-			easing = easing || function (t,b,c,d) { return c * Math.sin(t/d * (Math.PI/2)) + b; }, // sine ease out
-			run = function ( time ) {
-				end = time > start + duration || end || endall;
-				start = start || time;
-				step( end ? to : easing( time - start, 0, 1, duration ) * ( to - from ) + from );
-				end && ( remove( run ) || callback && callback() );
-			};
-		add( run );
-		return {
-			end : function () { end = 1; }
+	if ( ! requestAnimationFrame ) {
+		requestAnimationFrame = function( callback, element ){
+			var currTime = Date.now(),
+				timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) ),
+				id = window.setTimeout( 
+					function(){ callback( currTime + timeToCall ); },
+					timeToCall
+				);
+			lastTime = currTime + timeToCall;
+			return id;
 		};
 	}
-	
-	tweenie.end = function () {
-		endall = 1;	
-	}
-	
-	tweenie.kill = function () {
-		queue = [];
-	}
-	
-	return tweenie;
-	
-} ( this );
+
+	// Stack Object
+	var Stack = function(){
+		this.items = [];
+		this.add = function( fn ){
+			this.items.push( fn );
+			return this.tick();
+		};
+		this.remove = function( fn ){
+			for ( var i = 0; i < this.items.length; i++ )
+				if ( fn === this.items[ i ] )
+					this.items.splice( i, 1 );
+			return this;
+		};
+		this.step = function( time ){
+			if ( this.items.length < 1 )
+				return this;
+			for ( var i = 0, item; item = this.items[ i ], i < this.items.length; i++ ) {
+				item.step( time );
+				if ( item.pause ) 
+					this.remove( item );
+			}
+		};
+		this.tick = function () {
+			if ( this.items.length > 0 ) {
+				var self = this;
+				requestAnimationFrame(function( time ){ 
+					self.step( time )
+					self.tick();
+				});
+			}
+			return this;
+		};
+		this.stop = function ( finish ) {
+			for ( var i = 0; i < this.items.length; i++ )
+				this.queue[ i ].stop( finish );
+			return this;
+		};
+		return this;
+	};
+
+	// Tween Object
+	var Tween = function( options, parent ){
+		this.options = options;
+		this.parent  = parent;
+		this.start = function(){
+			parent.stack.add( this.reset() );
+			return this;
+		};
+		this.step = function( time ){
+			this.started = this.started || time;
+			if ( time > this.started + this.options.duration )
+				this.finish = this.pause = true;
+			this.options.step.call( this, this.finish ? this.options.to : this.options.easing( time - this.started, 0, 1, this.options.duration ) * ( this.options.to - this.options.from ) + this.options.from );
+			if ( this.finish && this.options.callback )
+				this.options.callback.call( this );
+			return this;
+		};
+		this.stop = function( finish ){
+			this.finish = !!finish;
+			this.pause  = 1;
+			return this;
+		};
+		this.reset = function( finish ){
+			this.started = this.finish = this.pause = 0;
+			return this;
+		};
+		return this;
+	};
+
+	// Tweenie Object
+	var Tweenie = function(){
+		this.stack = new Stack();
+		this.tween = function( duration, from, to, step, callback, easing ){
+			return new Tween( {
+				duration : duration,
+				from : from,
+				to : to,
+				step : step,
+				callback : callback,
+				easing: easing || function (t,b,c,d) { return c * Math.sin(t/d * (Math.PI/2)) + b; }
+			}, this );
+		}
+		this.stop = function( finish ){
+			stack.stop( finish );
+			return this;
+		};
+	};
+
+	// Tweenie Object Global 
+	window.Tweenie = Tweenie;
+
+}( this ));

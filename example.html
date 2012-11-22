@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>title</title>
+	<style>
+	.wrap {
+		position: relative;
+	}
+	.box {
+		width: 80px; height: 80px;
+		padding: 20px;
+		position: absolute;
+		top: 50px; left: 50px;
+		background: red;
+	}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="box" id="box">I'm A Box LOL</div>
+		<button id="start">Start</button>
+		<button id="stop">Stop</button>
+		<button id="end">Stop and End</button>
+		<button id="reset">Reset</button>
+	</div>
+	<script src="tweenie.min.js"></script>
+	<script>
+	(function() {
+
+		// Get Elements
+		var box   = document.getElementById('box'),
+			start = document.getElementById('start'),
+			stop  = document.getElementById('stop'),
+			end   = document.getElementById('end');
+
+		// Create Tweenie Instance
+		var tweenie = new Tweenie();
+
+		// Create Tween
+		var mytween = tweenie.tween(
+				5000,
+				50,
+				450,
+				function ( pos ) {
+					box.style.left = box.style.top = ( pos + 'px' );
+				},
+				function () {
+					alert('Done!');
+				}
+			);
+
+		// Events
+		start.onclick = function () {
+			mytween.start();
+		};
+		stop.onclick = function () {
+			mytween.stop();
+		};
+		end.onclick = function () {
+			mytween.stop( true );
+		};
+		reset.onclick = function () {
+			mytween.reset();
+		};
+
+	}())
+	</script>
+</body>
+</html>
