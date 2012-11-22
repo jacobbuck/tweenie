@@ -72,6 +72,7 @@
 		this.options = options;
 		this.parent  = parent;
 		this.start = function(){
+			this.finish = this.pause = 0;
 			parent.stack.remove( this ).add( this );
 			return this;
 		};
