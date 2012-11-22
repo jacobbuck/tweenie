@@ -13,7 +13,7 @@
 		i = 0;
 	for ( ; i < vendors.length && ! requestAnimationFrame; i++ ) {
 		requestAnimationFrame = window[vendors[i] + 'RequestAnimationFrame'];
-	}
+	};
 	if ( ! requestAnimationFrame ) {
 		requestAnimationFrame = function( callback, element ){
 			var currTime = Date.now(),
@@ -25,13 +25,12 @@
 			lastTime = currTime + timeToCall;
 			return id;
 		};
-	}
+	};
 
-	// Object Prototype Extender
-	Object.prototype.extend = function() {
-		for ( var i = 0; i < arguments.length; i++ )
-			for ( var j in arguments[ i ] )
-				this.prototype[ j ] = arguments[ i ][ j ];
+	// Function Prototype Extender
+	Function.prototype.extend = function( obj ) {
+		for ( var i in obj ) 
+			this.prototype[ i ] = obj[ i ];
 	}
 
 	// Stack Object
@@ -57,7 +56,7 @@
 				item.step( time );
 				if ( item.pause ) 
 					this.remove( item );
-			}
+			};
 			return this;
 		},
 		tick: function () {
@@ -67,7 +66,7 @@
 					self.step( time )
 					self.tick();
 				});
-			}
+			};
 			return this;
 		},
 		stop: function ( finish ) {
@@ -107,7 +106,7 @@
 			this.started = this.finish = this.pause = 0;
 			return this;
 		}
-	})
+	});
 
 	// Tweenie Object
 	var Tweenie = function(){
