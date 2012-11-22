@@ -92,9 +92,9 @@
 			this.started = this.started || time;
 			if ( time > this.started + this.options.duration )
 				this.finish = this.pause = true;
-			this.options.step.call( this, this.finish ? this.options.to : this.options.easing( time - this.started, 0, 1, this.options.duration ) * ( this.options.to - this.options.from ) + this.options.from );
+			this.options.step( this.finish ? this.options.to : this.options.easing( time - this.started, 0, 1, this.options.duration ) * ( this.options.to - this.options.from ) + this.options.from, this );
 			if ( this.finish && this.options.callback )
-				this.options.callback.call( this );
+				this.options.callback( this );
 			return this;
 		},
 		stop: function( finish ){
@@ -102,7 +102,7 @@
 			this.pause  = 1;
 			return this;
 		},
-		reset: function( finish ){
+		reset: function(){
 			this.started = this.finish = this.pause = 0;
 			return this;
 		}
