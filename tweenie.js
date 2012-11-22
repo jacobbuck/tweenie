@@ -61,7 +61,7 @@
 		};
 		this.stop = function ( finish ) {
 			for ( var i = 0; i < this.items.length; i++ )
-				this.queue[ i ].stop( finish );
+				this.items[ i ].stop( finish );
 			return this;
 		};
 		return this;
@@ -110,7 +110,7 @@
 			}, this );
 		}
 		this.stop = function( finish ){
-			stack.stop( finish );
+			this.stack.stop( finish );
 			return this;
 		};
 	};
