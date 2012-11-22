@@ -1,6 +1,6 @@
 /*!
  * Tweenie.js - Copyright (c) 2012 Jacob Buck
- * https://github.com/jacobbuck/tweenie.js
+ * https://github.com/jacobbuck/Tweenie.js
  * Licensed under the terms of the MIT license.
  */
 (function( window ){
@@ -9,7 +9,6 @@
 	// modified by Jacob Buck for Tweenie.js
 	var lastTime = 0,
 		requestAnimationFrame = window.requestAnimationFrame,
-		cancelAnimationFrame  = window.cancelAnimationFrame,
 		vendors = [ 'ms', 'moz', 'webkit', 'o' ],
 		i = 0;
 	for ( ; i < vendors.length && ! requestAnimationFrame; i++ ) {
