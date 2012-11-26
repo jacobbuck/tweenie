@@ -31,13 +31,13 @@ mytween.stop();
 // Stop and finish a Tween
 mytween.stop( true );
 
-// Reset a Tween
-mytween.reset();
+// Start all Tweens in Tweenie instance
+tweenie.start();
 
-// Stop all Tweens
+// Stop all Tweens in Tweenie instance
 tweenie.stop();
 
-// Stop and finish all Tweens
+// Stop and finish all Tweens in Tweenie instance
 tweenie.stop( true );
 ```
 
@@ -46,7 +46,7 @@ tweenie.stop( true );
 Tweenie has method chaining for both Tweenie and Tween instances. Eg:
 
 ``` js
-tweenie.tween( ... ).start();
+tweenie.stop().tween( ... ).start();
 ```
 
 ### Browser support

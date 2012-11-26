@@ -22,7 +22,6 @@
 		<button id="start">Start</button>
 		<button id="stop">Stop</button>
 		<button id="end">Stop and End</button>
-		<button id="reset">Reset</button>
 	</div>
 	<script src="tweenie.min.js"></script>
 	<script>
@@ -68,9 +67,6 @@
 		};
 		end.onclick = function () {
 			mytween.stop( true );
-		};
-		reset.onclick = function () {
-			mytween.reset();
 		};
 
 	}())

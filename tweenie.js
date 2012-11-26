@@ -18,7 +18,7 @@
 		requestAnimationFrame = function( callback, element ){
 			var currTime = Date.now(),
 				timeToCall = Math.max( 0, 16 - ( currTime - lastTime ) ),
-				id = window.setTimeout( 
+				id = window.setTimeout(
 					function(){ callback( currTime + timeToCall ); },
 					timeToCall
 				);
@@ -29,7 +29,7 @@
 
 	// Function Prototype Extender
 	Function.prototype.extend = function( obj ) {
-		for ( var i in obj ) 
+		for ( var i in obj )
 			this.prototype[ i ] = obj[ i ];
 	}
 
@@ -54,7 +54,7 @@
 				return this;
 			for ( var i = 0, item; item = this.items[ i ], i < this.items.length; i++ ) {
 				item.step( time );
-				if ( item.pause ) 
+				if ( item.finish )
 					this.remove( item );
 			};
 			return this;
@@ -62,9 +62,8 @@
 		tick: function () {
 			if ( this.items.length > 0 ) {
 				var self = this;
-				requestAnimationFrame(function( time ){ 
-					self.step( time )
-					self.tick();
+				requestAnimationFrame(function( time ){
+					self.step( time ).tick();
 				});
 			};
 			return this;
@@ -75,7 +74,7 @@
 			return this;
 		}
 	});
-	
+
 	// Tween Object
 	var Tween = function( options, parent ){
 		this.options = options;
@@ -84,26 +83,24 @@
 	};
 	Tween.extend({
 		start: function(){
-			this.finish = this.pause = 0;
+			if ( this.finish )
+				this.started = this.finish = 0;
 			this.parent.stack.remove( this ).add( this );
 			return this;
 		},
 		step: function( time ){
 			this.started = this.started || time;
 			if ( time > this.started + this.options.duration )
-				this.finish = this.pause = true;
+				this.finish = 1;
 			this.options.step( this.finish ? this.options.to : this.options.easing( time - this.started, 0, 1, this.options.duration ) * ( this.options.to - this.options.from ) + this.options.from, this );
 			if ( this.finish && this.options.callback )
 				this.options.callback( this );
 			return this;
 		},
 		stop: function( finish ){
-			this.finish = !!finish;
-			this.pause  = 1;
-			return this;
-		},
-		reset: function(){
-			this.started = this.finish = this.pause = 0;
+			this.finish = 1;
+			if ( ! finish )
+				this.parent.stack.remove( this );
 			return this;
 		}
 	});
@@ -129,7 +126,7 @@
 		}
 	});
 
-	// Tweenie Object Global 
+	// Tweenie Object Global
 	window.Tweenie = Tweenie;
 
 }( this ));
