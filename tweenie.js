@@ -27,18 +27,12 @@
 		};
 	};
 
-	// Function Prototype Extender
-	Function.prototype.extend = function( obj ) {
-		for ( var i in obj )
-			this.prototype[ i ] = obj[ i ];
-	}
-
 	// Stack Object
 	var Stack = function(){
 		this.items = [];
 		return this;
 	};
-	Stack.extend({
+	Stack.prototype = {
 		add: function( fn ){
 			this.items.push( fn );
 			return this.tick();
@@ -73,7 +67,7 @@
 				this.items[ i ].stop( finish );
 			return this;
 		}
-	});
+	};
 
 	// Tween Object
 	var Tween = function( options, parent ){
@@ -81,7 +75,7 @@
 		this.parent  = parent;
 		return this;
 	};
-	Tween.extend({
+	Tween.prototype = {
 		start: function(){
 			if ( this.finish )
 				this.started = this.finish = 0;
@@ -103,13 +97,13 @@
 				this.parent.stack.remove( this );
 			return this;
 		}
-	});
+	};
 
 	// Tweenie Object
 	var Tweenie = function(){
 		this.stack = new Stack();
 	};
-	Tweenie.extend({
+	Tweenie.prototype = {
 		tween: function( duration, from, to, step, callback, easing ){
 			return new Tween( {
 				duration : duration,
@@ -124,7 +118,7 @@
 			this.stack.stop( finish );
 			return this;
 		}
-	});
+	};
 
 	// Tweenie Object Global
 	window.Tweenie = Tweenie;
