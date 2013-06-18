@@ -1,9 +1,9 @@
 /*!
- * Tweenie.js - Copyright (c) 2012 Jacob Buck
+ * Tweenie.js - Copyright (c) 2013 Jacob Buck
  * https://github.com/jacobbuck/Tweenie.js
  * Licensed under the terms of the MIT license.
  */
-(function( window ){
+(function( context, window ){
 
 	// requestAnimationFrame polyfill by Erik Möller with fixes from Paul Irish and Tino Zijdel
 	// modified by Jacob Buck for Tweenie.js
@@ -121,6 +121,6 @@
 	};
 
 	// Tweenie Object Global
-	window.Tweenie = Tweenie;
+	context.Tweenie = Tweenie;
 
-}( this ));
+}( this, window ));
