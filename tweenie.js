@@ -1,6 +1,6 @@
 /*!
- * Tweenie.js - Copyright (c) 2013 Jacob Buck
- * https://github.com/jacobbuck/Tweenie.js
+ * Tweenie.js - Copyright (c) 2014 Jacob Buck
+ * https://github.com/jacobbuck/tweenie
  * Licensed under the terms of the MIT license.
  */
 (function( context, window ){
