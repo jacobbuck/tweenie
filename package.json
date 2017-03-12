@@ -1,12 +1,12 @@
 {
   "name": "tweensy",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A tiny tweening libary using requestAnimationFrame.",
   "main": "index.js",
   "dependencies": {
     "lodash": "^4.17.4",
     "performance-now": "^2.1.0",
-    "rafq": "0.0.1"
+    "rafq": "0.0.3"
   },
   "devDependencies": {},
   "scripts": {
