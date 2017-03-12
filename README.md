@@ -14,7 +14,7 @@ const mytween = tween({
   duration: 1000,
   easing: (t, b, c, d) => c*((t=t/d-1)*t*t + 1) + b, // cubic easing out
   onProgress: (val) => {
-    thing.style.top = `${val}px`;
+    thing.style.top = `${val.toFixed()}px`;
   },
   onComplete: () => {
     console.log('All done!');

@@ -6,6 +6,7 @@
 'use strict';
 
 var assign = require('lodash/assign');
+var now = require('performance-now');
 var rafq = require('rafq')();
 
 var defaultOptions = {
@@ -22,7 +23,9 @@ module.exports = function tween(instanceOptions) {
   var isFinished = false;
   var startTime = null;
 
-  function tick(time) {
+  function tick() {
+    var time = now();
+
     if (!startTime) {
       startTime = time;
     }
