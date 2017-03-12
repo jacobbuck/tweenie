@@ -9,13 +9,12 @@ var assign = require('lodash/assign');
 var rafq = require('rafq')();
 
 var defaultOptions = {
-  begin: function() {},
-  complete: function() {},
   duration: 0,
   easing: function(t, b, c, d) { return c * t / d + b; },
   from: 0,
-  progress: function() {},
-  to: 1
+  onComplete: function() {},
+  onProgress: function() {},
+  to: 1,
 };
 
 module.exports = function tween(instanceOptions) {
@@ -26,21 +25,20 @@ module.exports = function tween(instanceOptions) {
   function tick(time) {
     if (!startTime) {
       startTime = time;
-      options.begin(time);
     }
 
     if (time > startTime + options.duration) {
       isFinished = true;
     }
 
-    options.progress(
+    options.onProgress(
       isFinished ?
       options.to :
       options.easing(time - startTime, 0, 1, options.duration) * (options.to - options.from) + options.from
     );
 
     if (isFinished) {
-      options.complete(time);
+      options.onComplete(time);
     } else {
       rafq.add(tick);
     }
