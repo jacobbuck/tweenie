@@ -1,58 +1,32 @@
-Tweenie
--------
-A small (0.7 KB gzipped) tweening libary using the [requestAnimationFrame](http://webstuff.nfshost.com/anim-timing/Overview.html) standard.
+# Tweenie
 
-### Usage
+A tiny tweening libary using `requestAnimationFrame`.
 
-``` js
-// Create a new instance of Tweenie
-var tweenie = new Tweenie();
+## Usage
+
+```js
+import tween from 'tweenie';
 
 // Create a new Tween
-var mytween = tweenie.tween(
-	1000, // duration
-	100, // start
-	300, // end
-	function ( position ) { // do something at position
-		thing.style.top = position + 'px';
+const mytween = tween({
+	from: 100,
+	to: 300,
+	duration: 1000,
+	easing: (t, b, c, d) => c*((t=t/d-1)*t*t + 1) + b, // cubic easing out
+	progress: (val) => {
+		thing.style.top = `${val}px`;
 	},
-	function () { // do something on completion (optional)
-		console.log('done');
+	begin: () => {
+		console.log('Getting started…');
 	},
-	function (t, b, c, d) { return fancy math equation; } // easing equation (optional)
-);
-
-// Start a Tween
-mytween.start();
+	complete: () => {
+		console.log('All done!');
+	},
+})
 
 // Stop a Tween
 mytween.stop();
 
 // Stop and finish a Tween
-mytween.stop( true );
-
-// Start all Tweens in Tweenie instance
-tweenie.start();
-
-// Stop all Tweens in Tweenie instance
-tweenie.stop();
-
-// Stop and finish all Tweens in Tweenie instance
-tweenie.stop( true );
+mytween.stop(true);
 ```
-
-### Chaining
-
-Tweenie has method chaining for both Tweenie and Tween instances. Eg:
-
-``` js
-tweenie.stop().tween( ... ).start();
-```
-
-### Browser support
-
-Will run on all [Grade A browsers](http://yuilibrary.com/yui/environments/).
-
-### Inspired by
-
-[Émile](https://github.com/madrobby/emile/) by Thomas Fuchs, [Morpheus](https://github.com/ded/morpheus/) by Dustin Diaz, and [this blog post](http://paulirish.com/2011/requestanimationframe-for-smart-animating/) by Paul Irish.
