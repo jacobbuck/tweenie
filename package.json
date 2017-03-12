@@ -1,0 +1,33 @@
+{
+  "name": "tweensy",
+  "version": "0.0.1",
+  "description": "A tiny tweening libary using requestAnimationFrame.",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "rafq": "0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobbuck/tweensy.git"
+  },
+  "keywords": [
+    "animation",
+    "easing",
+    "inbetweening",
+    "raf",
+    "requestAnimationFrame",
+    "tween",
+    "tweening"
+  ],
+  "author": "Jacob Buck <buck.jacob@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jacobbuck/tweensy/issues"
+  },
+  "homepage": "https://github.com/jacobbuck/tweensy#readme"
+}
