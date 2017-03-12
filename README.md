@@ -1,4 +1,4 @@
-# Tweenie
+# tweensy
 
 A tiny tweening libary using `requestAnimationFrame`.
 
