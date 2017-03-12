@@ -5,9 +5,9 @@ A tiny tweening libary using `requestAnimationFrame`.
 ## Usage
 
 ```js
-import tween from 'tweenie';
+import tween from 'tweensy';
 
-// Create a new Tween
+// Create and start a tween
 const mytween = tween({
 	from: 100,
 	to: 300,
@@ -21,9 +21,9 @@ const mytween = tween({
 	},
 })
 
-// Stop a Tween
+// Stop a tween
 mytween();
 
-// Stop and finish a Tween
+// Stop and finish a tween
 mytween(true);
 ```
