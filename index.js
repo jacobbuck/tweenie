@@ -15,7 +15,7 @@ var defaultOptions = {
   from: 0,
   onComplete: function() {},
   onProgress: function() {},
-  to: 1,
+  to: 1
 };
 
 module.exports = function tween(instanceOptions) {
@@ -54,7 +54,7 @@ module.exports = function tween(instanceOptions) {
     }
   }
 
-  rafq.add(tick);
+  tick();
 
   return stop;
 };
