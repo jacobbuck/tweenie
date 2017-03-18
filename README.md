@@ -1,6 +1,6 @@
 # tweensy
 
-A tiny tweening libary using `requestAnimationFrame`.
+Tiny performant tweening library.
 
 ## Usage
 

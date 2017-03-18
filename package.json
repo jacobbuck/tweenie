@@ -1,14 +1,13 @@
 {
   "name": "tweensy",
   "version": "0.0.4",
-  "description": "A tiny tweening libary using requestAnimationFrame.",
+  "description": "Tiny performant tweening library.",
   "main": "index.js",
   "dependencies": {
     "lodash": "^4.17.4",
     "performance-now": "^2.1.0",
     "rafq": "0.0.3"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

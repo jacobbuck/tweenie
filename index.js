@@ -31,15 +31,12 @@ module.exports = function tween(instanceOptions) {
       startTime = time;
     }
 
-    var progress = isFinished ? 1 : (time - startTime) / options.duration;
+    var progress = isFinished ? 1 :
+      Math.min((time - startTime) / options.duration, 1);
 
     options.onProgress(options.easing(progress) * fromToMultiplier);
 
     if (progress === 1) {
-      isFinished = true;
-    }
-
-    if (isFinished) {
       options.onComplete(time);
     } else {
       rafq.add(tick);
