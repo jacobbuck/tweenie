@@ -22,7 +22,7 @@ var defaultOptions = {
 module.exports = function tween(instanceOptions) {
   var options = assign({}, defaultOptions, instanceOptions);
   var isFinished = false;
-  var iterations = 1;
+  var iteration = 1;
   var startTime = null;
 
   function tick() {
@@ -32,20 +32,26 @@ module.exports = function tween(instanceOptions) {
       startTime = time;
     }
 
-    var progress = (time - (startTime * iterations)) / options.duration;
+    var progress = isFinished ?
+      1 :
+      (time - (startTime * iteration)) / options.duration;
 
-    options.onProgress(options.easing(isFinished ? 1 : progress) * (options.to - options.from) + options.from);
+    options.onProgress(
+      options.easing(progress) *
+        (options.to - options.from) +
+          options.from
+    );
 
     if (progress === 1) {
-      if (iterations < options.loop) {
-        iterations += 1;
+      if (iteration < options.loop) {
+        iteration += 1;
       } else {
         isFinished = true;
       }
     }
 
     if (isFinished) {
-      options.onComplete(time);
+      options.onComplete();
     } else {
       rafq.add(tick);
     }
