@@ -11,7 +11,7 @@ var rafq = require('rafq')();
 
 var defaultOptions = {
   duration: 0,
-  easing: function(t, b, c, d) { return c * t / d + b; },
+  easing: function linear(t) { return t; },
   from: 0,
   onComplete: function() {},
   onProgress: function() {},
@@ -30,15 +30,13 @@ module.exports = function tween(instanceOptions) {
       startTime = time;
     }
 
-    if (time > startTime + options.duration) {
+    var progress = (time - startTime) / options.duration;
+
+    if (progress === 1) {
       isFinished = true;
     }
 
-    options.onProgress(
-      isFinished ?
-      options.to :
-      options.easing(time - startTime, 0, 1, options.duration) * (options.to - options.from) + options.from
-    );
+    options.onProgress(options.easing(progress) * (options.to - options.from) + options.from);
 
     if (isFinished) {
       options.onComplete(time);
