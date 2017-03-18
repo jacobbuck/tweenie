@@ -13,6 +13,7 @@ var defaultOptions = {
   duration: 0,
   easing: function linear(t) { return t; },
   from: 0,
+  loop: 1,
   onComplete: function() {},
   onProgress: function() {},
   to: 1
@@ -21,6 +22,7 @@ var defaultOptions = {
 module.exports = function tween(instanceOptions) {
   var options = assign({}, defaultOptions, instanceOptions);
   var isFinished = false;
+  var iterations = 1;
   var startTime = null;
 
   function tick() {
@@ -30,13 +32,17 @@ module.exports = function tween(instanceOptions) {
       startTime = time;
     }
 
-    var progress = (time - startTime) / options.duration;
+    var progress = (time - (startTime * iterations)) / options.duration;
+
+    options.onProgress(options.easing(isFinished ? 1 : progress) * (options.to - options.from) + options.from);
 
     if (progress === 1) {
-      isFinished = true;
+      if (iterations < options.loop) {
+        iterations += 1;
+      } else {
+        isFinished = true;
+      }
     }
-
-    options.onProgress(options.easing(progress) * (options.to - options.from) + options.from);
 
     if (isFinished) {
       options.onComplete(time);
@@ -47,6 +53,7 @@ module.exports = function tween(instanceOptions) {
 
   function stop(finish) {
     isFinished = true;
+
     if (!finish) {
       rafq.remove(tick);
     }
