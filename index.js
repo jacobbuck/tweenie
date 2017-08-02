@@ -22,7 +22,6 @@ const tween = instanceOptions => {
     ...defaultOptions,
     ...instanceOptions,
   };
-  const fromToMultiplier = options.to - options.from + options.from;
   let isFinished = false;
   let startTime = null;
 
@@ -37,7 +36,9 @@ const tween = instanceOptions => {
       ? 1
       : Math.min((time - startTime) / options.duration, 1);
 
-    options.onProgress(options.easing(progress) * fromToMultiplier);
+    options.onProgress(
+      options.easing(progress) * (options.to - options.from) + options.from
+    );
 
     if (progress === 1) {
       options.onComplete(time);
