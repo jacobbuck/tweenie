@@ -3,8 +3,8 @@
  * https://github.com/jacobbuck/tweensy
  * Licensed under the terms of the MIT license.
  */
-import now from 'performance-now';
-import rafq from 'rafq';
+import now from "performance-now";
+import rafq from "rafq";
 
 const queue = rafq();
 
@@ -22,7 +22,7 @@ const tween = instanceOptions => {
     ...defaultOptions,
     ...instanceOptions,
   };
-  const fromToMultiplier = (options.to - options.from) + options.from;
+  const fromToMultiplier = options.to - options.from + options.from;
   let isFinished = false;
   let startTime = null;
 
@@ -33,8 +33,9 @@ const tween = instanceOptions => {
       startTime = time;
     }
 
-    var progress = isFinished ? 1 :
-      Math.min((time - startTime) / options.duration, 1);
+    var progress = isFinished
+      ? 1
+      : Math.min((time - startTime) / options.duration, 1);
 
     options.onProgress(options.easing(progress) * fromToMultiplier);
 
@@ -51,7 +52,7 @@ const tween = instanceOptions => {
     if (!finish) {
       queue.remove(tick);
     }
-  }
+  };
 
   tick();
 
