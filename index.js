@@ -17,6 +17,8 @@ const defaultOptions = {
   to: 1,
 };
 
+const interpolate = (from, to, t) => from * (1 - t) + from * t;
+
 const tween = instanceOptions => {
   const options = {
     ...defaultOptions,
@@ -36,9 +38,7 @@ const tween = instanceOptions => {
       ? 1
       : Math.min((time - startTime) / options.duration, 1);
 
-    options.onProgress(
-      options.easing(progress) * (options.to - options.from) + options.from
-    );
+    options.onProgress(interpolate(from, to, options.easing(progress)));
 
     if (progress === 1) {
       options.onComplete(time);
