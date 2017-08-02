@@ -3,29 +3,31 @@
  * https://github.com/jacobbuck/tweensy
  * Licensed under the terms of the MIT license.
  */
-'use strict';
+import now from 'performance-now';
+import rafq from 'rafq';
 
-var assign = require('lodash/assign');
-var now = require('performance-now');
-var rafq = require('rafq')();
+const queue = rafq();
 
-var defaultOptions = {
+const defaultOptions = {
   duration: 0,
-  easing: function linear(t) { return t; },
+  easing: t => t,
   from: 0,
-  onComplete: function() {},
-  onProgress: function() {},
-  to: 1
+  onComplete: () => {},
+  onProgress: () => {},
+  to: 1,
 };
 
-module.exports = function tween(instanceOptions) {
-  var options = assign({}, defaultOptions, instanceOptions);
-  var isFinished = false;
-  var fromToMultiplier = (options.to - options.from) + options.from;
-  var startTime = null;
+const tween = instanceOptions => {
+  const options = {
+    ...defaultOptions,
+    ...instanceOptions,
+  };
+  const fromToMultiplier = (options.to - options.from) + options.from;
+  let isFinished = false;
+  let startTime = null;
 
-  function tick() {
-    var time = now();
+  const tick = () => {
+    const time = now();
 
     if (!startTime) {
       startTime = time;
@@ -39,15 +41,15 @@ module.exports = function tween(instanceOptions) {
     if (progress === 1) {
       options.onComplete(time);
     } else {
-      rafq.add(tick);
+      queue.add(tick);
     }
-  }
+  };
 
-  function stop(finish) {
+  const stop = finish => {
     isFinished = true;
 
     if (!finish) {
-      rafq.remove(tick);
+      queue.remove(tick);
     }
   }
 
