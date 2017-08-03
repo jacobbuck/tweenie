@@ -11,7 +11,7 @@ const queue = rafq();
 const lerp = (v0, v1, t) => (1 - t) * v0 + t * v1;
 
 const createInterpolate = (v0, v1) => {
-  if (typeof from === "number") {
+  if (typeof v0 === "number") {
     return t => lerp(v0, v1, t);
   } else if (Array.isArray(v0)) {
     return t => v0.map((v, i) => lerp(v, v1[i], t));
