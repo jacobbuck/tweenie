@@ -40,10 +40,10 @@ const tween = options => {
       options.onProgress(lerp(from, to, t));
     } else if (Array.isArray(from)) {
       options.onProgress(from.map((v, i) => lerp(v, to[i], t)));
-    } else {
+    } else if (typeof from === "object") {
       options.onProgress(
         Object.keys(from).reduce((memo, i) => {
-          memo[key] = lerp(from[i], to[i], t);
+          memo[i] = lerp(from[i], to[i], t);
           return memo;
         }, {})
       );
