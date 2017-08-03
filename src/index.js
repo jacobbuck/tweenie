@@ -10,6 +10,21 @@ const queue = rafq();
 
 const lerp = (v0, v1, t) => (1 - t) * v0 + t * v1;
 
+const createInterpolate = (v0, v1) => {
+  if (typeof from === "number") {
+    return t => lerp(v0, v1, t);
+  } else if (Array.isArray(v0)) {
+    return t => v0.map((v, i) => lerp(v, v1[i], t));
+  } else if (typeof v0 === "object") {
+    const keys = Object.keys(v0);
+    return t =>
+      keys.reduce((memo, i) => {
+        memo[i] = lerp(v0[i], v1[i], t);
+        return memo;
+      }, {});
+  }
+};
+
 const tween = options => {
   const {
     duration = 0,
@@ -23,6 +38,8 @@ const tween = options => {
   let isFinished = false;
   let startTime = null;
 
+  const interpolate = createInterpolate(from, to);
+
   const tick = () => {
     const time = now();
 
@@ -34,20 +51,7 @@ const tween = options => {
       ? 1
       : Math.min((time - startTime) / options.duration, 1);
 
-    const t = options.easing(progress);
-
-    if (typeof from === "number") {
-      options.onProgress(lerp(from, to, t));
-    } else if (Array.isArray(from)) {
-      options.onProgress(from.map((v, i) => lerp(v, to[i], t)));
-    } else if (typeof from === "object") {
-      options.onProgress(
-        Object.keys(from).reduce((memo, i) => {
-          memo[i] = lerp(from[i], to[i], t);
-          return memo;
-        }, {})
-      );
-    }
+    options.onProgress(interpolate(options.easing(progress)));
 
     if (progress === 1) {
       options.onComplete(time);
