@@ -2,14 +2,14 @@
   "name": "tweensy",
   "version": "0.0.5",
   "description": "Tiny performant tweening library.",
-  "main": "index.js",
-  "dependencies": {
-    "lodash": "^4.17.4",
-    "performance-now": "^2.1.0",
-    "rafq": "0.0.3"
-  },
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel --out-dir lib src",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,13 @@
   "bugs": {
     "url": "https://github.com/jacobbuck/tweensy/issues"
   },
-  "homepage": "https://github.com/jacobbuck/tweensy#readme"
+  "homepage": "https://github.com/jacobbuck/tweensy#readme",
+  "dependencies": {
+    "performance-now": "^2.1.0",
+    "rafq": "0.0.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1"
+  }
 }
