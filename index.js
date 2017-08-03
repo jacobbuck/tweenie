@@ -8,37 +8,46 @@ import rafq from "rafq";
 
 const queue = rafq();
 
-const defaultOptions = {
-  duration: 0,
-  easing: t => t,
-  from: 0,
-  onComplete: () => {},
-  onProgress: () => {},
-  to: 1,
-};
+const lerp = (v0, v1, t) => (1 - t) * v0 + t * v1;
 
-const interpolate = (from, to, t) => from * (1 - t) + from * t;
+const tween = options => {
+  const {
+    duration = 0,
+    easing = t => t,
+    from,
+    onComplete = () => {},
+    onProgress = () => {},
+    to,
+  } = options;
 
-const tween = instanceOptions => {
-  const options = {
-    ...defaultOptions,
-    ...instanceOptions,
-  };
   let isFinished = false;
   let startTime = null;
 
   const tick = () => {
     const time = now();
 
-    if (!startTime) {
+    if (startTime === null) {
       startTime = time;
     }
 
-    var progress = isFinished
+    const progress = isFinished
       ? 1
       : Math.min((time - startTime) / options.duration, 1);
 
-    options.onProgress(interpolate(from, to, options.easing(progress)));
+    const t = options.easing(progress);
+
+    if (typeof from === "number") {
+      options.onProgress(lerp(from, to, t));
+    } else if (Array.isArray(from)) {
+      options.onProgress(from.map((v, i) => lerp(v, to[i], t)));
+    } else {
+      options.onProgress(
+        Object.keys(from).reduce(
+          (memo, i) => ({ ...memo, [key]: lerp(from[i], to[i], t) }),
+          {}
+        )
+      );
+    }
 
     if (progress === 1) {
       options.onComplete(time);
